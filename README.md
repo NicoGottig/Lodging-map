@@ -109,9 +109,9 @@ To avoid biasing the average per fortnight, the consultations were divided into 
 
 #### 2 - Manipulation and Validation:
 To build the final database, the price per night is calculated by adding the taxes and dividing by the number of nights requested.
-On the other hand, the null values ​​existing in the lodging price are eliminated due to their particularities and the qualification values ​​are filled in based on their distribution. [More information in the script](https://github.com/NicoGottig/myvdd2022_tf_gottig/blob/main/Scripts/02_tfi_manipulacion-validacion.R)<br>
+On the other hand, the null values ​​existing in the lodging price are eliminated due to their particularities and the qualification values ​​are filled in based on their distribution. [More information in the script](https://github.com/NicoGottig/Lodging-map/blob/main/Scripts/02_tfi_manipulacion-validacion.R)<br>
 
 #### 4 - Presentation of information:
-For the presentation of the information an interactive application *Shiny* was developed. The user can enter style options and calculation filters to display summarized information on a map. In addition, you can consult summarized and complete tables, allowing you to access the description of each lodging. To access the application, click here. ](https://mj8qpg-nicolas-gottig.shinyapps.io/Mapa_Interactivo_Hospedajes_Argentina/?_ga=2.91187288.370091405.1672937106-2073232725.1672937106)<br>
+For the presentation of the information an interactive application *Shiny* was developed. The user can enter style options and calculation filters to display summarized information on a map. In addition, you can consult summarized and complete tables, allowing you to access the description of each lodging. To access the application, click [here](https://mj8qpg-nicolas-gottig.shinyapps.io/Mapa_Interactivo_Hospedajes_Argentina/?_ga=2.91187288.370091405.1672937106-2073232725.1672937106)<br>
 
 <br>
