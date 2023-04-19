@@ -53,7 +53,7 @@ Para evitar sesgar el promedio por quincena, se dividieron las consultas en dos 
 Para constituir la base de datos final, se calcula el precio por noche sumando los impuestos y dividiendo por la cantidad de noches solicitadas. 
 Por otro lado, se eliminan los valores nulos existentes en el precio de hospedaje debido a las particularidades de éstos y se rellenan los valores de la calificación en función de su distribución. [Más información en el script](https://github.com/NicoGottig/Lodging-map/blob/main/Scripts/02_tfi_manipulacion-validacion.R)<br>
 
-#### 4 - Presentación de la información:
+#### 3 - Presentación de la información:
 Para la presentación de la información se desarrolló una aplicación interactiva *Shiny*. El usuario puede ingresar opciones de estilo y filtros de cálculo para visualizar la información resumida en un mapa. Además, puede consultar tablas resumidas y completas, permitiendo acceder la descripción de cada hospedaje. Para acceder a la aplicación haga [click aquí. ](https://mj8qpg-nicolas-gottig.shinyapps.io/Mapa_Interactivo_Hospedajes_Argentina/?_ga=2.91187288.370091405.1672937106-2073232725.1672937106)<br>
 
 # Interactive Map of Accommodation Prices in Argentina 2023
@@ -111,7 +111,7 @@ To avoid biasing the average per fortnight, the consultations were divided into 
 To build the final database, the price per night is calculated by adding the taxes and dividing by the number of nights requested.
 On the other hand, the null values ​​existing in the lodging price are eliminated due to their particularities and the qualification values ​​are filled in based on their distribution. [More information in the script](https://github.com/NicoGottig/Lodging-map/blob/main/Scripts/02_tfi_manipulacion-validacion.R)<br>
 
-#### 4 - Presentation of information:
+#### 3 - Presentation of information:
 For the presentation of the information an interactive application *Shiny* was developed. The user can enter style options and calculation filters to display summarized information on a map. In addition, you can consult summarized and complete tables, allowing you to access the description of each lodging. To access the application, click [here](https://mj8qpg-nicolas-gottig.shinyapps.io/Mapa_Interactivo_Hospedajes_Argentina/?_ga=2.91187288.370091405.1672937106-2073232725.1672937106)<br>
 
 <br>
