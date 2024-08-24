@@ -1,117 +1,147 @@
 # Mapa Interactivo de Precios de Hospedaje en Argentina 2023
 
 ## Resumen
-Esta aplicación resume, según distintos hospedajes de Booking para el año 2023 (y para dos personas adultas, sin hijos), los **precios**, la **cantidad** y la **puntuación** de hoteles, cabañas y otros tipos de albergues en Argentina.
 
-La información se recolectó a través de técnicas de Web Scraping, se almacenó en una base de datos relacional, se transformó y se validó para evitar valores nulos. No se realizó un tratamiento de datos atípicos debido a que la selección del rango de precios depende exclusivamente del usuario. 
+Esta aplicación resume, para distintos hospedajes de Booking en el año 2023 (para dos personas adultas, sin hijos), los **precios**, la **cantidad** y la **puntuación** de hoteles, cabañas y otros tipos de alojamientos en Argentina.
 
-Para la visualización se realizó una aplicación interactiva *Shiny*, con un mapa dinámico generado a través del paquete *leaflet*.
-<br>
+La información se recopiló mediante técnicas de Web Scraping, se almacenó en una base de datos relacional, y se transformó y validó para evitar valores nulos. No se realizó un tratamiento de datos atípicos, ya que la selección del rango de precios depende exclusivamente del usuario.
 
-## Objetivo y metodología
-El objetivo de la aplicación es resumir y exponer información en función de las solicitudes del usuario.
-Para esto, se extrajo información sobre la localización, el precio, la descripción y el puntaje de más de 150.000 hospedajes en Argentina.<br>
-Es **importante** tener en cuenta que el precio del hospedaje depende, entre otros factores, de la fecha de extracción de los datos. Por ejemplo, no es lo mismo buscar precios de hospedajes para el mes de enero, durante el mes de diciembre que durante el mes de octubre.  <br>
-*En este caso, la extracción de los datos se realizó durante el mes de diciembre y enero.*<br>
+Para la visualización, se desarrolló una aplicación interactiva *Shiny*, con un mapa dinámico generado a través del paquete *leaflet*.
 
-Por otro lado, para el **cálculo de los estadísticos** de precios, se realizó un muestreo no probabilístico; se seleccionaron $n$ ciudades por provincia en función de consultas a empleados de empresas de servicios turísticos, y recomendaciones online.
+---
 
-El sitio *Booking* puede recomendar hospedajes de otras localidades, por lo tanto, para una cantidad $n$ de ciudades solicitadas se generará una cantidad $k$ de ciudades disponibles, conteniendo cada una $h$ hospedajes, y así para las 23 provincias (la Ciudad Autónoma de Buenos Aires está incluida en la provincia de Buenos Aires) <br>
+## Objetivo y Metodología
 
-La base de datos construida a través de las técnicas de web scraping estará compuesta por las siguientes variables:  <br>
-+ **Localización**: Indica la ciudad del hospedaje.<br>
-+ **Titulo**: Indica el título del hospedaje, como está expuesto en Booking.<br>
-+ **Descripción**: Breve resumen del hospedaje.<br>
-+ **Clasif**: Calificación del hospedaje (del 1 al 10).<br>
-+ **Precio**: Precio del hospedaje por el total de días solicitados.<br>
-+ **Impuesto**: Impuesto total por la cantidad de días solicitados.<br>   
-+ **Noches**: Cantidad de noches solicitadas. <br>
-+ **Provincia**: Indica la provincia del hospedaje.<br>
-+ **Checkin**: Fecha solicitada para el ingreso al hospedaje.<br>
-+ **Checkout**: Fecha solicitada para el egreso del hospedaje.<br>
-<br>
+El objetivo de esta aplicación es resumir y presentar información en función de las solicitudes del usuario. Para ello, se extrajo información sobre la localización, precio, descripción y puntaje de más de 150.000 hospedajes en Argentina.
 
-Además, se construyen las siguientes variables:  <br>
-+ **Precio_noche**: Precio neto por noche del hospedaje (Precio_Noche=Precio/Noches)  <br>
-+ **Impuesto_noche**: Impuesto por noche del hospedaje (Impuesto_noche=Impuesto/Noches)<br>  
-+ **Bruto_noche**: Precio total (incluyendo impuestos) (Bruto_Noche=Precio_noche+Impuesto_Noche)<br>
+Es **importante** considerar que el precio del hospedaje depende, entre otros factores, de la fecha de extracción de los datos. Por ejemplo, no es lo mismo buscar precios de hospedajes para enero en diciembre que en octubre.  
+*En este caso, los datos fueron extraídos durante los meses de diciembre y enero.*
 
-Con respecto a las fuentes de información, se utilizará Booking por su facilidad de acceso a la información.<br>
+### Cálculo de Estadísticos de Precios
 
-Por lo tanto, los precios son considerados *"precios de mercado"*; es decir, incluyen los impuestos o subsidios, además del valor agregado de las empresas que ofrecen el servicio.<br>
+Se realizó un muestreo no probabilístico para calcular los estadísticos de precios, seleccionando $n$ ciudades por provincia en base a consultas con empleados de empresas de servicios turísticos y recomendaciones en línea.
 
-Con estas consideraciones, los estadísticos expuestos no pueden ser considerados un "indicador" de precios provinciales de hospedaje, limitando el análisis a la exploración de los datos contextualizada en un momento determinado y en una región dada.<br>
+El sitio *Booking* puede sugerir hospedajes de otras localidades, por lo que para una cantidad $n$ de ciudades solicitadas, se generará una cantidad $k$ de ciudades disponibles, cada una con $h$ hospedajes, y así sucesivamente para las 23 provincias (incluyendo a la Ciudad Autónoma de Buenos Aires dentro de la provincia de Buenos Aires).
 
-## Etapas:
+---
 
-#### 1 - Extracción de los datos:
-Para la extracción de los datos se programó una función que recoge una consulta (ej. Hospedajes de la ciudad de Paraná) e itinera las páginas disponibles en Booking recogiendo datos sobre cada hospedaje.
-En caso de no encontrar datos, se reemplaza la celda por un valor nulo. Esto sucede principalmente en la calificación de los hospedajes.
-Para evitar sesgar el promedio por quincena, se dividieron las consultas en dos grupos de 15 días, y se calculó el promedio de ambas.<br>
+## Variables de la Base de Datos
 
-#### 2 - Manipulación y Validación:
-Para constituir la base de datos final, se calcula el precio por noche sumando los impuestos y dividiendo por la cantidad de noches solicitadas. 
-Por otro lado, se eliminan los valores nulos existentes en el precio de hospedaje debido a las particularidades de éstos y se rellenan los valores de la calificación en función de su distribución. [Más información en el script](https://github.com/NicoGottig/Lodging-map/blob/main/Scripts/02_tfi_manipulacion-validacion.R)<br>
+La base de datos construida mediante técnicas de Web Scraping incluye las siguientes variables:
 
-#### 3 - Presentación de la información:
-Para la presentación de la información se desarrolló una aplicación interactiva *Shiny*. El usuario puede ingresar opciones de estilo y filtros de cálculo para visualizar la información resumida en un mapa. Además, puede consultar tablas resumidas y completas, permitiendo acceder la descripción de cada hospedaje. Para acceder a la aplicación haga [click aquí. ](https://mj8qpg-nicolas-gottig.shinyapps.io/Mapa_Interactivo_Hospedajes_Argentina/?_ga=2.91187288.370091405.1672937106-2073232725.1672937106)<br>
+- **Localización**: Ciudad del hospedaje.
+- **Título**: Nombre del hospedaje tal como aparece en Booking.
+- **Descripción**: Breve resumen del hospedaje.
+- **Clasificación**: Puntuación del hospedaje (de 1 a 10).
+- **Precio**: Costo del hospedaje por el total de días solicitados.
+- **Impuesto**: Impuesto total por la cantidad de días solicitados.
+- **Noches**: Número de noches solicitadas.
+- **Provincia**: Provincia del hospedaje.
+- **Checkin**: Fecha de ingreso al hospedaje.
+- **Checkout**: Fecha de salida del hospedaje.
+
+### Variables Adicionales Calculadas
+
+- **Precio_noche**: Precio neto por noche del hospedaje (Precio_Noche=Precio/Noches).
+- **Impuesto_noche**: Impuesto por noche del hospedaje (Impuesto_noche=Impuesto/Noches).
+- **Bruto_noche**: Precio total por noche, incluyendo impuestos (Bruto_Noche=Precio_noche+Impuesto_Noche).
+
+---
+
+## Proceso de Desarrollo
+
+### 1 - Extracción de Datos
+
+Se programó una función para extraer datos mediante consultas específicas (e.g., hospedajes en la ciudad de Paraná), iterando sobre las páginas disponibles en Booking para recopilar información de cada alojamiento. En caso de no encontrar datos, se asigna un valor nulo. Las consultas se dividieron en dos grupos de 15 días para evitar sesgar los promedios.
+
+### 2 - Manipulación y Validación
+
+Se calculó el precio por noche sumando impuestos y dividiendo por el número de noches solicitadas. Se eliminaron valores nulos en los precios de hospedaje y se completaron valores de calificación según su distribución.  
+[Más información en el script](https://github.com/NicoGottig/Lodging-map/blob/main/Scripts/02_tfi_manipulacion-validacion.R).
+
+### 3 - Presentación de la Información
+
+Se desarrolló una aplicación interactiva *Shiny* donde el usuario puede seleccionar opciones de estilo y filtros de cálculo para visualizar la información en un mapa. También es posible consultar tablas detalladas con la descripción de cada hospedaje.  
+Para acceder a la aplicación, haga [click aquí](https://mj8qpg-nicolas-gottig.shinyapps.io/Mapa_Interactivo_Hospedajes_Argentina/?_ga=2.91187288.370091405.1672937106-2073232725.1672937106).
+
+---
+
+### Notas Finales
+
+Los precios mostrados son considerados como *"precios de mercado"*, es decir, incluyen impuestos, subsidios y el valor agregado de las empresas de servicios turísticos. Por lo tanto, los estadísticos presentados no deben ser considerados indicadores definitivos de precios provinciales de hospedaje, sino más bien una exploración de los datos en un momento y región específicos.
+
+---
 
 # Interactive Map of Accommodation Prices in Argentina 2023
 
 ## Summary
-This application summarizes, according to different Booking accommodations for 2023 (and for two adults, without children), the **prices**, the **quantity** and the **score** of hotels, cabins and others types of hostels in Argentina.
 
-The information was collected through Web Scraping techniques, stored in a relational database, transformed and validated to avoid null values. Outlier data treatment was not performed because the selection of the price range depends exclusively on the user.
+This application summarizes, for various Booking accommodations in 2023 (for two adults without children), the **prices**, **quantity**, and **ratings** of hotels, cabins, and other types of lodgings in Argentina.
 
-For visualization, an interactive *Shiny* application was made, with a dynamic map generated through the *leaflet* package.
+The data was collected using Web Scraping techniques, stored in a relational database, and then transformed and validated to avoid null values. No treatment for outlier data was performed since the selection of the price range is entirely user-dependent.
 
-## Purpose and methodology
-The purpose of the application is to summarize and expose information based on user requests.
-For this, information was extracted on the location, price, description and score of more than 150,000 lodgings in Argentina.<br>
+For visualization, an interactive *Shiny* application was developed, featuring a dynamic map generated using the *leaflet* package.
 
-It is **important** to know that the price of the accommodation depends, among other factors, on the data extraction date. For example, it is not the same to look for lodging prices for the month of January, during the month of December than during the month of October. <br>
-*In this case, the data extraction was carried out during the months of December and January.*<br>
+---
 
-On the other hand, for the **calculation of the price statistics**, a non-probabilistic sampling was carried out; $n$ cities per province were selected based on consultations with employees of tourism service companies, and online recommendations.
+## Objective and Methodology
 
-The *Booking* site can recommend lodgings from other locations, therefore, for a quantity $n$ of cities requested, a quantity $k$ of available cities will be generated, each containing $h$ lodgings, and so on for the 23 provinces (the Autonomous City of Buenos Aires is included in the province of Buenos Aires) <br>
+The objective of this application is to summarize and present information based on user requests. To achieve this, data was extracted on the location, price, description, and rating of over 150,000 accommodations in Argentina.
 
-The database built through web scraping techniques will be composed of the following variables: <br>
-+ **Location**: Indicates the city of the lodging.<br>
-+ **Title**: Indicates the title of the lodging, as it is exposed in Booking.<br>
-+ **Description**: Brief summary of the lodging.<br>
-+ **Classif**: Rating of the accommodation (from 1 to 10).<br>
-+ **Price**: Price of the accommodation for the total number of days requested.<br>
-+ **Tax**: Total tax for the number of days requested.<br>
-+ **Nights**: Number of nights requested. <br>
-+ **Province**: Indicates the province of the accommodation.<br>
-+ **Checkin**: Date requested for admission to the lodging.<br>
-+ **Checkout**: Date requested for the departure of the lodging.<br>
-<br>
+It's **important** to note that the price of accommodation depends, among other factors, on the date of data extraction. For example, searching for lodging prices for January in December will yield different results than searching in October.  
+*In this case, the data extraction was conducted during December and January.*
 
-In addition, the following variables are constructed: <br>
-+ **Price_night**: Net price per night of the lodging (Price_Night=Price/Nights) <br>
-+ **Tax_night**: Tax per night of the lodging (Tax_night=Tax/Nights)<br>
-+ **Gross_night**: Total price (including taxes) (Gross_Night=Price_night+Tax_Night)<br>
+### Price Statistics Calculation
 
-Regarding the sources of information, Booking will be used for its ease of access to information.<br>
+A non-probabilistic sampling method was used to calculate price statistics, selecting $n$ cities per province based on consultations with employees of tourism service companies and online recommendations.
 
-Therefore, the prices are considered *"market prices"*; that is, they include taxes or subsidies, in addition to the added value of the companies that offer the service.<br>
+The *Booking* site may recommend accommodations from other locations. Therefore, for a requested number of $n$ cities, a different number of $k$ available cities will be generated, each containing $h$ accommodations, and this will apply across the 23 provinces (including the Autonomous City of Buenos Aires within the Buenos Aires province).
 
-With these considerations, the exposed statistics cannot be considered an "indicator" of provincial lodging prices, limiting the analysis to the exploration of the data contextualized at a given moment and in a given region.<br>
+---
 
-## Process:
+## Variables in the Database
 
-#### 1 - Data extraction:
-To extract the data, a function was programmed that collects a query (eg Lodgings in the city of Paraná) and roams the pages available in Booking collecting data on each lodging.
-If no data is found, the cell is replaced with a null value. This happens mainly in the rating of the lodgings.
-To avoid biasing the average per fortnight, the consultations were divided into two groups of 15 days, and the average of both was calculated.<br>
+The database constructed through Web Scraping techniques includes the following variables:
 
-#### 2 - Manipulation and Validation:
-To build the final database, the price per night is calculated by adding the taxes and dividing by the number of nights requested.
-On the other hand, the null values ​​existing in the lodging price are eliminated due to their particularities and the qualification values ​​are filled in based on their distribution. [More information in the script](https://github.com/NicoGottig/Lodging-map/blob/main/Scripts/02_tfi_manipulacion-validacion.R)<br>
+- **Location**: City of the lodging.
+- **Title**: Name of the lodging as listed on Booking.
+- **Description**: Brief summary of the lodging.
+- **Classification**: Rating of the accommodation (from 1 to 10).
+- **Price**: Cost of the accommodation for the total number of days requested.
+- **Tax**: Total tax for the number of days requested.
+- **Nights**: Number of nights requested.
+- **Province**: Province of the lodging.
+- **Checkin**: Date of entry into the lodging.
+- **Checkout**: Date of departure from the lodging.
 
-#### 3 - Presentation of information:
-For the presentation of the information an interactive application *Shiny* was developed. The user can enter style options and calculation filters to display summarized information on a map. In addition, you can consult summarized and complete tables, allowing you to access the description of each lodging. To access the application, click [here](https://mj8qpg-nicolas-gottig.shinyapps.io/Mapa_Interactivo_Hospedajes_Argentina/?_ga=2.91187288.370091405.1672937106-2073232725.1672937106)<br>
+### Additional Calculated Variables
 
-<br>
+- **Price_night**: Net price per night of the lodging (Price_Night=Price/Nights).
+- **Tax_night**: Tax per night of the lodging (Tax_night=Tax/Nights).
+- **Gross_night**: Total price per night, including taxes (Gross_Night=Price_night+Tax_Night).
+
+---
+
+## Development Process
+
+### 1 - Data Extraction
+
+A function was programmed to extract data based on specific queries (e.g., lodgings in the city of Paraná), iterating over available pages on Booking to gather information on each lodging. If no data is found, a null value is assigned. To avoid biasing the average by fortnight, queries were divided into two 15-day groups, and the average of both was calculated.
+
+### 2 - Data Manipulation and Validation
+
+The final database was built by calculating the price per night, adding taxes, and dividing by the number of nights requested. Null values in accommodation prices were eliminated due to their specific characteristics, and rating values were filled in based on their distribution.  
+[More information in the script](https://github.com/NicoGottig/Lodging-map/blob/main/Scripts/02_tfi_manipulacion-validacion.R).
+
+### 3 - Presentation of Information
+
+An interactive *Shiny* application was developed for information presentation. Users can select style options and calculation filters to view summarized information on a map. They can also access detailed and complete tables, allowing them to read the description of each lodging.  
+To access the application, click [here](https://mj8qpg-nicolas-gottig.shinyapps.io/Mapa_Interactivo_Hospedajes_Argentina/?_ga=2.91187288.370091405.1672937106-2073232725.1672937106).
+
+---
+
+### Final Notes
+
+The displayed prices are considered *"market prices"*; that is, they include taxes, subsidies, and the added value from the companies providing the service. Therefore, the presented statistics should not be considered definitive indicators of provincial lodging prices, limiting the analysis to data exploration within a specific moment and region.
+
+
