@@ -8,6 +8,9 @@ La información se recopiló mediante técnicas de Web Scraping, se almacenó en
 
 Para la visualización, se desarrolló una aplicación interactiva *Shiny*, con un mapa dinámico generado a través del paquete *leaflet*.
 
+- 📄 [Acceder al Script de Manipulación y Validación de Datos](https://github.com/NicoGottig/Lodging-map/blob/main/Scripts/02_tfi_manipulacion-validacion.R)
+- 🌐 [Explorar la Aplicación Interactiva Shiny](https://mj8qpg-nicolas-gottig.shinyapps.io/Mapa_Interactivo_Hospedajes_Argentina/?_ga=2.91187288.370091405.1672937106-2073232725.1672937106)
+
 ---
 
 ## Objetivo y Metodología
@@ -81,6 +84,10 @@ This application summarizes, for various Booking accommodations in 2023 (for two
 The data was collected using Web Scraping techniques, stored in a relational database, and then transformed and validated to avoid null values. No treatment for outlier data was performed since the selection of the price range is entirely user-dependent.
 
 For visualization, an interactive *Shiny* application was developed, featuring a dynamic map generated using the *leaflet* package.
+
+- 📄 [Access the Data Manipulation and Validation Script](https://github.com/NicoGottig/Lodging-map/blob/main/Scripts/02_tfi_manipulacion-validacion.R)
+- 🌐 [Explore the Interactive Shiny Application](https://mj8qpg-nicolas-gottig.shinyapps.io/Mapa_Interactivo_Hospedajes_Argentina/?_ga=2.91187288.370091405.1672937106-2073232725.1672937106)
+
 
 ---
 
